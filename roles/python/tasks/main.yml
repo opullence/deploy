@@ -1,0 +1,9 @@
+---
+
+- name: update setuptools
+  pip:
+    name: setuptools
+    virtualenv: /opt/opullence/env 
+    virtualenv_command: /usr/bin/python3 -m venv
+    state: latest
+

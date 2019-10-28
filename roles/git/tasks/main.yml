@@ -1,0 +1,18 @@
+---
+
+- name: "create dir {{ target_dir }}"
+  file:
+    path: "{{ target_dir }}"
+    state: directory
+    owner: vagrant
+    group: vagrant
+  become: yes
+
+- name: "clone collectors repo in {{ target_dir }}"
+  git:
+    repo: git@github.com:opullence/collectors.git
+    version: master
+    dest: "{{ target_dir }}"
+    accept_hostkey: yes
+  become: no
+

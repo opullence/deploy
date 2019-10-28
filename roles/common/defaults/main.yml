@@ -1,0 +1,4 @@
+packages:
+  - redis-server
+  - docker.io
+  - python3-venv

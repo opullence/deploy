@@ -1,0 +1,9 @@
+---
+
+- name: "install system packages"
+  apt:
+    name: "{{ packages }}"
+    state: latest
+    update_cache: yes
+  become: yes
+
