@@ -10,5 +10,8 @@ Vagrant.configure("2") do |config|
     config.vm.provision "ansible" do |ansible|
         ansible.verbose = "v"
         ansible.playbook = "site.yml"
+        ansible.extra_vars = {
+            ssh_pub_key_dir: '/home/YOU/.ssh'       
+        }
     end
 end

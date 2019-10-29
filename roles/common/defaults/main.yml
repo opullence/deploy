@@ -1,4 +1,8 @@
 packages:
   - redis-server
   - docker.io
+  - python3.7
   - python3-venv
+
+ssh_authorized_keys:
+  - henry

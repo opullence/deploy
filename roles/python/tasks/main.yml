@@ -1,9 +1,13 @@
 ---
 
-- name: update setuptools
+- name: update pip packages
   pip:
-    name: setuptools
+    name: "{{ packages }}"
     virtualenv: /opt/opullence/env 
     virtualenv_command: /usr/bin/python3 -m venv
     state: latest
 
+- name: install requirements
+  pip:
+    requirements: /opt/opullence/requirements.txt
+    virtualenv: /opt/opullence/env

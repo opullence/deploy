@@ -7,3 +7,8 @@
     update_cache: yes
   become: yes
 
+- name: Copy ssh key
+  authorized_key:
+    key: "{{ lookup('file', ssh_pub_key_dir + '/' + item + '.pub') }}"
+    user: vagrant
+  with_items: "{{ ssh_authorized_keys }}"
