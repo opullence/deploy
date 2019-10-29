@@ -1,0 +1,1 @@
+celery_dir: ["/var/log/celery", "/var/run/celery"]

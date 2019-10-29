@@ -1,0 +1,16 @@
+---
+
+- name: start celery service
+  systemd:
+    name: celery
+    state: started
+
+- name: stop celery service
+  systemd:
+    name: celery
+    state: stopped
+
+- name: reload celery service
+  systemd:
+    name: celery
+    state: reload

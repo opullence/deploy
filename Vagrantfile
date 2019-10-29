@@ -11,7 +11,7 @@ Vagrant.configure("2") do |config|
         ansible.verbose = "v"
         ansible.playbook = "site.yml"
         ansible.extra_vars = {
-            ssh_pub_key_dir: '/home/YOU/.ssh'       
+            ssh_pub_key_dir: '/home/johndoe/.ssh'       
         }
     end
 end

@@ -1,6 +1,6 @@
 ---
 
-- name: "install system packages"
+- name: install system packages
   apt:
     name: "{{ packages }}"
     state: latest
