@@ -1,25 +1,27 @@
 ---
 
-- name: install system packages
-  apt:
-    name: "{{ packages }}"
-    state: latest
-    update_cache: yes
-  become: yes
+- name: common
+  block:
+  - name: install system packages
+    apt:
+      name: "{{ packages }}"
+      state: latest
+      update_cache: yes
+    become: yes
 
-- name: Copy ssh key
-  authorized_key:
-    key: "{{ lookup('file', ssh_pub_key_dir + '/' + item + '.pub') }}"
-    user: vagrant
-  with_items: "{{ ssh_authorized_keys }}"
+  - name: Copy ssh key
+    authorized_key:
+      key: "{{ lookup('file', ssh_pub_key_dir + '/' + item + '.pub') }}"
+      user: vagrant
+    with_items: "{{ ssh_authorized_keys }}"
 
-- name: "create dir {{ target_dir }}"
-  file:
-    path: "{{ target_dir }}"
-    state: directory
-    owner: vagrant
-    group: vagrant
-  become: yes
+  - name: "create dir {{ target_dir }}"
+    file:
+      path: "{{ target_dir }}"
+      state: directory
+      owner: vagrant
+      group: vagrant
+    become: yes
 
 - name: "clone collectors repo in {{ target_dir }}"
   git:
@@ -29,38 +31,42 @@
     accept_hostkey: yes
   become: no
 
-- name: update pip packages
-  pip:
-    name: "{{ packages_pip }}"
-    virtualenv: /opt/opullence/env 
-    virtualenv_command: /usr/bin/python3 -m venv
-    state: latest
+- name: pyhton init repo
+  block:
+  - name: update pip packages
+    pip:
+      name: "{{ packages_pip }}"
+      virtualenv: /opt/opullence/env 
+      virtualenv_command: /usr/bin/python3 -m venv
+      state: latest
 
-- name: install requirements
-  pip:
-    requirements: /opt/opullence/requirements.txt
-    virtualenv: /opt/opullence/env
+  - name: install requirements
+    pip:
+      requirements: /opt/opullence/requirements.txt
+      virtualenv: /opt/opullence/env
 
-- name: "create dir {{ celery_dir }}"
-  file:
-    path: "{{ item }}"
-    state: directory
-    owner: vagrant
-    group: vagrant
-  with_items: "{{ celery_dir }}"
-  become: yes
+- name: celery service config
+  block:
+  - name: "create dir {{ celery_dir }}"
+    file:
+      path: "{{ item }}"
+      state: directory
+      owner: vagrant
+      group: vagrant
+    with_items: "{{ celery_dir }}"
+    become: yes
 
-- name: copy celery service config
-  copy:
-    src: etc/
-    dest: /etc/
-    owner: root
-    group: root
-  become: yes
+  - name: copy celery service config
+    copy:
+      src: etc/
+      dest: /etc/
+      owner: root
+      group: root
+    become: yes
 
-- name: load and start celery service
-  systemd:
-    daemon_reload: yes
-    name: celery
-    state: started
-  become: yes
+  - name: load and start celery service
+    systemd:
+      daemon_reload: yes
+      name: celery
+      state: started
+    become: yes
