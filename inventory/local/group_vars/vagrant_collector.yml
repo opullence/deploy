@@ -1,0 +1,15 @@
+---
+packages:
+  - redis-server
+  - docker.io
+  - python3.7
+  - python3-venv
+
+ssh_authorized_keys:
+  - henry
+
+target_dir: "/opt/opullence"
+
+packages_pip: [setuptools, pip]
+
+celery_dir: ["/var/log/celery", "/var/run/celery"]

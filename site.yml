@@ -1,11 +1,9 @@
 ---
 
-- hosts: all
+- name: vagrant deployment
+  hosts: vagrant_collector
+  remote_user: vagrant
   roles:
-    - common
-    - git
-    - redis
-    - python
-    - celery
+    - collector
 
 ...

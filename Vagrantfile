@@ -10,8 +10,10 @@ Vagrant.configure("2") do |config|
     config.vm.provision "ansible" do |ansible|
         ansible.verbose = "v"
         ansible.playbook = "site.yml"
+        ansible.limit = "vagrant_collector"
+        ansible.inventory_path = "inventory/local"
         ansible.extra_vars = {
-            ssh_pub_key_dir: '/home/johndoe/.ssh'       
+            ssh_pub_key_dir: '/home/johndoe/.ssh'      
         }
     end
 end

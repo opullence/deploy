@@ -1,0 +1,39 @@
+---
+
+- name: start docker server
+  service:
+    name: docker
+    state: started
+
+- name: reload docker server
+  service:
+    name: docker
+    state: reloaded
+
+- name: start redis server
+  service:
+    name: redis-server
+    state: started
+
+- name: reload redis server
+  service:
+    name: redis-server
+    state: reloaded
+
+- name: start celery service
+  systemd:
+    name: celery
+    state: started
+
+- name: stop celery service
+  systemd:
+    name: celery
+    state: stopped
+
+- name: reload celery service
+  systemd:
+    name: celery
+    state: reload
+
+
+
