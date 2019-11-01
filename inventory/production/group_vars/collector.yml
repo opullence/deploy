@@ -1,4 +1,6 @@
 ---
+user: henry
+
 packages:
   - redis-server
   - docker.io
@@ -7,6 +9,8 @@ packages:
 
 ssh_authorized_keys:
   - henry
+  - louis
+  - augustin
 
 target_dir: "/opt/opullence"
 

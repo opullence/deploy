@@ -1,8 +1,8 @@
 ---
 
-- name: vagrant deployment
-  hosts: vagrant_collector
-  remote_user: vagrant
+- name: collector deployment
+  hosts: collector
+  remote_user: "{{ hostvars[groups['collector'][0]].user }}"
   roles:
     - collector
 
