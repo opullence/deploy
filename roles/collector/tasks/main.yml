@@ -12,15 +12,15 @@
   - name: Copy ssh key
     authorized_key:
       key: "{{ lookup('file', ssh_pub_key_dir + '/' + item + '.pub') }}"
-      user: vagrant
+      user: "{{ user }}"
     with_items: "{{ ssh_authorized_keys }}"
 
   - name: "create dir {{ target_dir }}"
     file:
       path: "{{ target_dir }}"
       state: directory
-      owner: vagrant
-      group: vagrant
+      owner: "{{ user }}"
+      group: "{{ group }}"
     become: yes
 
 - name: "clone collectors repo in {{ target_dir }}"
@@ -45,14 +45,35 @@
       requirements: /opt/opullence/requirements.txt
       virtualenv: /opt/opullence/env
 
+- name: run redis in container
+  block:
+  - name: copy redis docker compose
+    copy:
+       src: opt/redis
+       dest: /opt/
+       owner: "{{ user }}"
+       group: "{{ group }}"
+    become: yes
+  - name: install docker py
+    pip:
+      name:
+        - pip
+        - docker-compose
+      state: latest
+    become: yes
+  - name: docker compose operation
+    docker_compose:
+      project_src: /opt/redis
+    become: yes
+
 - name: celery service config
   block:
   - name: "create dir {{ celery_dir }}"
     file:
       path: "{{ item }}"
       state: directory
-      owner: vagrant
-      group: vagrant
+      owner: "{{ user }}"
+      group: "{{ group }}"
     with_items: "{{ celery_dir }}"
     become: yes
 
@@ -64,6 +85,24 @@
       group: root
     become: yes
 
+  - name: add user of the host
+    replace:
+      path: /etc/systemd/system/celery.service
+      after: 'User='
+      before: '\nGroup='
+      regexp: '^(.+)$'
+      replace: '{{ user }}'
+    become: yes
+
+  - name: add group of the host
+    replace:
+      path: /etc/systemd/system/celery.service
+      after: 'Group='
+      before: '\nEnv'
+      regexp: '^(.+)$'
+      replace: '{{ group }}'
+    become: yes
+  
   - name: load and start celery service
     systemd:
       daemon_reload: yes

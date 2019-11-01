@@ -4,8 +4,8 @@ After=network.target
 
 [Service]
 Type=forking
-User=vagrant
-Group=vagrant
+User=user
+Group=user
 EnvironmentFile=/etc/conf.d/celery
 WorkingDirectory=/opt/opullence
 ExecStart=/bin/sh -c '${CELERY_BIN} multi start ${CELERYD_NODES} \

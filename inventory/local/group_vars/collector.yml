@@ -1,11 +1,12 @@
 ---
 user: vagrant
+group: vagrant
 
 packages:
-  - redis-server
   - docker.io
   - python3.7
   - python3-venv
+  - python3-pip
 
 ssh_authorized_keys:
   - henry
