@@ -85,24 +85,12 @@
       group: root
     become: yes
 
-  - name: add user of the host
-    replace:
-      path: /etc/systemd/system/celery.service
-      after: 'User='
-      before: '\nGroup='
-      regexp: '^(.+)$'
-      replace: '{{ user }}'
+  - name: copy celery service config with variable
+    template:
+      src: celery.j2
+      dest: /etc/systemd/system/celery.service
     become: yes
 
-  - name: add group of the host
-    replace:
-      path: /etc/systemd/system/celery.service
-      after: 'Group='
-      before: '\nEnv'
-      regexp: '^(.+)$'
-      replace: '{{ group }}'
-    become: yes
-  
   - name: load and start celery service
     systemd:
       daemon_reload: yes
