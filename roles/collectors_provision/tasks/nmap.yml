@@ -1,0 +1,25 @@
+---
+- name: Install Nmap
+  become: true
+  apt:
+    name: nmap
+    update_cache: yes
+    state: latest
+
+
+- name: Set capabilities on /usr/bin/nmap
+  capabilities:
+    path: /usr/bin/nmap
+    capability: cap_net_raw,cap_net_admin,cap_net_bind_service+eip
+    state: present
+  become: yes
+  become_user: root
+
+- name: Set NMAP_PRIVILEGED
+  lineinfile:
+    dest: "/etc/environment"
+    state: present
+    regexp: "^NMAP_PRIVILEGED"
+    line: "NMAP_PRIVILEGED=''"
+  become: yes
+  become_user: root

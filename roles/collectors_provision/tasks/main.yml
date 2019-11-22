@@ -1,2 +1,30 @@
 - debug: 
     msg: "{{ provision }}"
+
+- name: Add the user collector
+  user:
+    name: collector
+    groups: collector
+
+
+- name: Creates /srv/bin directory
+  file:
+    path: /srv/bin
+    owner: collector
+    group: collector
+    mode: 0775
+    state: directory
+
+- name: Ensure all the directories are created with the right permissions
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: collector
+    group: collector
+    recurse: yes
+  with_items:
+    - /srv/bin
+
+- name: Include all tasks
+  include: "{{ item }}"
+  with_items: "{{ provision }}"

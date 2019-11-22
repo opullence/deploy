@@ -1,0 +1,44 @@
+---
+- block:
+
+  - name: 'recon-ng : clone repository'
+    git:
+      accept_hostkey: yes
+      clone: yes
+      depth: 1
+      dest: /srv/recon-ng
+      force: yes
+      repo: https://github.com/lanmaster53/recon-ng.git
+
+  - name: 'recon-ng : clone modules repository'
+    git:
+      accept_hostkey: yes
+      clone: yes
+      depth: 1
+      dest: /home/collector/.recon-ng
+      force: yes
+      repo: https://github.com/lanmaster53/recon-ng-marketplace.git
+    become: yes
+    become_user: collector
+
+  - name: 'recon-ng : remove existing venv'
+    file:
+      path: /srv/recon-ng/.venv
+      state: absent
+
+  - name: 'recon-ng : install requirements'
+    pip:
+      requirements: /srv/recon-ng/REQUIREMENTS
+      virtualenv: /srv/recon-ng/.venv
+      virtualenv_python: python3
+
+  - name: 'recon-ng : install launcher'
+    template:
+      dest: /srv/bin/recon-ng
+      mode: 0755
+      src: recon-ng.sh
+    become: yes
+    become_user: collector
+
+  tags:
+    - recon-ng

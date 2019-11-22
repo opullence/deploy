@@ -19,8 +19,6 @@ packages_pip: [setuptools, pip]
 
 celery_dir: ["/var/log/celery", "/var/run/celery"]
 
-
 provision:
-  - a
-  - b
-  - c
+  - nmap.yml
+  - recon-ng.yml
