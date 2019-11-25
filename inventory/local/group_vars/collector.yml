@@ -1,6 +1,6 @@
 ---
-user: vagrant
-group: vagrant
+user: collector
+group: wheel
 
 packages:
   - docker.io

@@ -7,13 +7,28 @@ Vagrant.configure("2") do |config|
         config.vm.post_up_message = "Opullence collector is up"    
     end
     
+    config.vm.provision "shell", inline: <<-SHELL
+        groupadd -r wheel
+        useradd -m -s /bin/bash -U collector -p vagrant -u 666 --groups wheel
+        cp -pr /home/vagrant/.ssh /home/collector/
+        chown -R collector:collector /home/collector
+        echo "%collector ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/collector
+        sed -i "s/vagrant/collector/g" /home/collector/.ssh/authorized_keys
+    SHELL
+
+    VAGRANT_COMMAND = ARGV[0]
+    if VAGRANT_COMMAND == "ssh"
+        config.ssh.username = 'collector'
+    end
+
     config.vm.provision "ansible" do |ansible|
         ansible.verbose = "v"
         ansible.playbook = "site.yml"
         ansible.limit = "collector"
         ansible.inventory_path = "inventory/local"
         ansible.extra_vars = {
-            ssh_pub_key_dir: '.ssh-keys'      
+            ssh_pub_key_dir: '.ssh-keys',
+            ansible_user: 'collector'  
         }
     end
 end
