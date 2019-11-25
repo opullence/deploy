@@ -7,13 +7,13 @@ Vagrant.configure("2") do |config|
         config.vm.post_up_message = "Opullence collector is up"    
     end
     
-    config.vm.provision "ansible" do |ansible|
-        ansible.verbose = "v"
-        ansible.playbook = "site.yml"
-        ansible.limit = "collector"
-        ansible.inventory_path = "inventory/local"
-        ansible.extra_vars = {
-            ssh_pub_key_dir: '.ssh-keys'      
-        }
-    end
+    # config.vm.provision "ansible" do |ansible|
+    #     ansible.verbose = "v"
+    #     ansible.playbook = "site.yml"
+    #     ansible.limit = "collector"
+    #     ansible.inventory_path = "inventory/local"
+    #     ansible.extra_vars = {
+    #         ssh_pub_key_dir: '.ssh-keys'      
+    #     }
+    # end
 end

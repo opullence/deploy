@@ -18,3 +18,7 @@ target_dir: "/opt/opullence"
 packages_pip: [setuptools, pip]
 
 celery_dir: ["/var/log/celery", "/var/run/celery"]
+
+vault_url: http://192.168.50.50:8200
+vault_token: 
+server_vault: "{{ lookup('hashi_vault', 'secret=secret/collector token={{ vault_token }} url={{ vault_url }}') }}"
