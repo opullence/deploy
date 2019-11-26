@@ -25,10 +25,11 @@ Vagrant.configure("2") do |config|
         ansible.verbose = "v"
         ansible.playbook = "site.yml"
         ansible.limit = "collector"
-        ansible.inventory_path = "inventory/local"
+        ansible.inventory_path = "inventory/production"
         ansible.extra_vars = {
             ssh_pub_key_dir: '.ssh-keys',
-            ansible_user: 'collector'  
+            ansible_user: 'collector',
+            host_collector: '127.0.0.1'
         }
     end
 end
