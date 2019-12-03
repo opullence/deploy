@@ -1,0 +1,29 @@
+---
+- block:
+  - name: 'WafW00f : clone repository'
+    git:
+      accept_hostkey: yes
+      clone: yes
+      depth: 1
+      dest: /srv/scripts/
+      force: yes
+      repo: https://github.com/EnableSecurity/wafw00f
+
+  - name: 'WafW00f : remove existing venv'
+    file:
+      path: /srv/scripts/wafw00f/env
+      state: absent
+    
+  - name: 'WafW00f: install project'
+        shell: "/srv/scripts/wafw00f/env/bin/python /srv/scripts/wafw00f/setup.py install"
+
+  - name: 'WafW00f : install launcher'
+    file:
+      src: /srv/scripts/wafw00f/env/bin/wafw00f
+      dest: /srv/bin/wafw00f
+      owner: collector
+      group: collector
+      state: link
+
+  tags:
+    - WafW00f
