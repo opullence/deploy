@@ -22,3 +22,4 @@ celery_dir: ["/var/log/celery", "/var/run/celery"]
 provision:
   - nmap.yml
   - recon-ng.yml
+  - wafw00f.yml

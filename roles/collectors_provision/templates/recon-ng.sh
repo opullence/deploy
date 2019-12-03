@@ -1,3 +1,4 @@
-#!/usr/bin/zsh
-cd /srv/recon-ng
-.venv/bin/python recon-cli "$@"
+#!/bin/sh
+
+cd /srv/scripts/recon-ng
+./env/bin/python recon-cli "$@"

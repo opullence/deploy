@@ -29,16 +29,16 @@
   - name: 'recon-ng : install requirements'
     pip:
       requirements: /srv/scripts/recon-ng/REQUIREMENTS
-      virtualenv: /srv/scripts/recon-ng/.venv
+      virtualenv: /srv/scripts/recon-ng/env
       virtualenv_python: python3
 
   - name: 'recon-ng : install launcher'
-    file:
-      src: /srv/scripts/recon-ng/env/bin/recon-cli
+    template:
       dest: /srv/bin/recon-ng
-      owner: collector
-      group: collector
-      state: link
+      mode: 0755
+      src: recon-ng.sh
+    become: yes
+    become_user: collector
 
   tags:
     - recon-ng
