@@ -1,6 +1,5 @@
 ---
 - block:
-
   - name: 'recon-ng : clone repository'
     git:
       accept_hostkey: yes
@@ -18,8 +17,6 @@
       dest: /home/collector/.recon-ng
       force: yes
       repo: https://github.com/lanmaster53/recon-ng-marketplace.git
-    become: yes
-    become_user: collector
 
   - name: 'recon-ng : remove existing venv'
     file:
@@ -37,8 +34,5 @@
       dest: /srv/bin/recon-ng
       mode: 0755
       src: recon-ng.sh
-    become: yes
-    become_user: collector
-
   tags:
     - recon-ng

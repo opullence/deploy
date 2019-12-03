@@ -1,11 +1,18 @@
 - debug: 
     msg: "{{ provision }}"
 
+- name: Ensure all the debian packages are installed
+  apt:
+    name: "{{ packages }}"
+  vars:
+    packages:
+    - python-virtualenv
+    - python3-pip
+
 - name: Add the user collector
   user:
     name: collector
     groups: collector
-
 
 - name: Creates /srv/bin directory
   file:
@@ -24,6 +31,15 @@
     recurse: yes
   with_items:
     - /srv/bin
+    - /srv/scripts
+
+- name: add /srv/bin to path
+  lineinfile: >
+    dest=/etc/environment
+    state=present
+    backrefs=yes
+    regexp='PATH=(["]*)((?!.*?/srv/bin).*?)(["]*)$'
+    line="PATH=\1\2:/srv/bin\3"
 
 - name: Include all tasks
   include: "{{ item }}"
