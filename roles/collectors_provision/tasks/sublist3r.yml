@@ -1,0 +1,29 @@
+---
+- block:
+  - name: 'sublist3r : clone repository'
+    git:
+      accept_hostkey: yes
+      clone: yes
+      depth: 1
+      dest: /srv/scripts/Sublist3r
+      force: yes
+      repo: https://github.com/aboul3la/Sublist3r.git
+
+  - name: 'sublist3r : remove existing venv'
+    file:
+      path: /srv/scripts/Sublist3r/env
+      state: absent
+
+  - name: 'sublist3r : install requirements'
+    pip:
+      requirements: /srv/scripts/Sublist3r/requirements.txt
+      virtualenv: /srv/scripts/Sublist3r/env
+      virtualenv_python: python3
+
+  - name: 'sublist3r : install launcher'
+    template:
+      dest: /srv/bin/sublist3r
+      mode: 0755
+      src: sublist3r.sh
+  tags:
+    - sublist3r

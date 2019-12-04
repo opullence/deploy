@@ -24,3 +24,4 @@ provision:
   - recon-ng.yml
   - wafw00f.yml
   - gobuster.yml
+  - sublist3r.yml

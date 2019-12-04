@@ -22,16 +22,12 @@
     mode: 0775
     state: directory
 
-- name: Ensure all the directories are created with the right permissions
-  file:
-    path: "{{ item }}"
-    state: directory
-    owner: collector
-    group: collector
-    recurse: yes
-  with_items:
-    - /srv/bin
-    - /srv/scripts
+- name: Download wordlists
+  git:
+    accept_hostkey: yes
+    clone: yes
+    dest: /srv/wordlists
+    repo: git@gitlab.com:opulence/wordlists.git
 
 - name: add /srv/bin to path
   lineinfile: >
@@ -44,3 +40,15 @@
 - name: Include all tasks
   include: "{{ item }}"
   with_items: "{{ provision }}"
+
+- name: Ensure all the directories are created with the right permissions
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: collector
+    group: collector
+    recurse: yes
+  with_items:
+    - /srv/bin
+    - /srv/scripts
+    - /srv/wordlists
