@@ -29,7 +29,7 @@ Vagrant.configure("2") do |config|
         ansible.extra_vars = {
             ssh_pub_key_dir: '.ssh-keys',
             ansible_user: 'collector',
-            host_collector: '127.0.0.1'
+            host_collector: '127.0.0.1',
         }
     end
 end
