@@ -40,6 +40,9 @@
       virtualenv_command: /usr/bin/python3 -m venv
       state: latest
 
+  - name: add gitlab as know hosts
+    shell: "ssh-keyscan -H gitlab.com >> ~/.ssh/known_hosts"
+
   - name: install requirements
     pip:
       requirements: /opt/opullence/requirements.txt
