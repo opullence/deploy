@@ -18,11 +18,6 @@
       force: yes
       repo: https://github.com/lanmaster53/recon-ng-marketplace.git
 
-  - name: 'recon-ng : remove existing venv'
-    file:
-      path: /srv/scripts/recon-ng/env
-      state: absent
-
   - name: 'recon-ng : install requirements'
     pip:
       requirements: /srv/scripts/recon-ng/REQUIREMENTS

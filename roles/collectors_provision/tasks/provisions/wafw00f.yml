@@ -9,11 +9,6 @@
       force: yes
       repo: https://github.com/EnableSecurity/wafw00f.git
 
-  - name: 'WafW00f : remove existing venv'
-    file:
-      path: /srv/scripts/wafw00f/env
-      state: absent
-
   - name: 'WafW00f : Create venv'
     command: virtualenv /srv/scripts/wafw00f/env
     

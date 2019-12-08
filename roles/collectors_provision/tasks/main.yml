@@ -26,6 +26,7 @@
   git:
     accept_hostkey: yes
     clone: yes
+    force: yes
     dest: /srv/wordlists
     repo: git@gitlab.com:opulence/wordlists.git
 
@@ -37,9 +38,18 @@
     regexp='PATH=(["]*)((?!.*?/srv/bin).*?)(["]*)$'
     line="PATH=\1\2:/srv/bin\3"
 
+- name: Register all tasks name
+  command: "ls ../roles/collectors_provision/tasks/provisions/"
+  register: tasks_to_include
+
 - name: Include all tasks
-  include: "{{ item }}"
-  with_items: "{{ provision }}"
+  include: "{{ 'provisions/' + item }}"
+  with_items: "{{ tasks_to_include.stdout_lines | difference(['main.yml']) | list }}"
+
+# - name: Include all tasks
+#   include: "{{ item }}"
+#   with_items: "{{ provision }}"
+
 
 - name: Ensure all the directories are created with the right permissions
   file:
@@ -47,6 +57,7 @@
     state: directory
     owner: collector
     group: collector
+    mode: 0750
     recurse: yes
   with_items:
     - /srv/bin

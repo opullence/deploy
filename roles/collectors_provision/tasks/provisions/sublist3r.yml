@@ -9,11 +9,6 @@
       force: yes
       repo: https://github.com/aboul3la/Sublist3r.git
 
-  - name: 'sublist3r : remove existing venv'
-    file:
-      path: /srv/scripts/Sublist3r/env
-      state: absent
-
   - name: 'sublist3r : install requirements'
     pip:
       requirements: /srv/scripts/Sublist3r/requirements.txt

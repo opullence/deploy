@@ -1,0 +1,24 @@
+---
+- block:
+  - name: 'kupa3 : clone repository'
+    git:
+      accept_hostkey: yes
+      clone: yes
+      depth: 1
+      dest: /srv/scripts/kupa3
+      force: yes
+      repo: https://github.com/jurelou/kupa3.git
+
+  - name: 'kupa3 : install requirements'
+    pip:
+      requirements: /srv/scripts/kupa3/requirements.txt
+      virtualenv: /srv/scripts/kupa3/env
+      virtualenv_python: python3.6
+
+  - name: 'kupa3 : install launcher'
+    template:
+      dest: /srv/bin/kupa3
+      mode: 0755
+      src: kupa3.sh
+  tags:
+    - kupa3

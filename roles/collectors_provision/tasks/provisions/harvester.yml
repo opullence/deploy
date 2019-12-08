@@ -1,0 +1,24 @@
+---
+- block:
+  - name: 'theHarvester : clone repository'
+    git:
+      accept_hostkey: yes
+      clone: yes
+      depth: 1
+      dest: /srv/scripts/theHarvester
+      force: yes
+      repo: https://github.com/laramies/theHarvester.git
+
+  - name: 'theHarvester : install requirements'
+    pip:
+      requirements: /srv/scripts/theHarvester/requirements.txt
+      virtualenv: /srv/scripts/theHarvester/env
+      virtualenv_python: python3.7
+
+  - name: 'theHarvester : install launcher'
+    template:
+      dest: /srv/bin/theHarvester
+      mode: 0755
+      src: theHarvester.sh
+  tags:
+    - theHarvester

@@ -5,7 +5,7 @@
       name: fubarhouse.golang
 
   - name: 'gobuster: install project'
-    shell: "whoami && /usr/local/go/bin/go get github.com/OJ/gobuster"
+    shell: "/usr/local/go/bin/go get github.com/OJ/gobuster"
     environment:
       GOROOT: /usr/local/go
       GOPATH: /srv/gopath
