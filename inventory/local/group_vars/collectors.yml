@@ -1,0 +1,27 @@
+---
+user: vagrant
+group: vagrant
+
+packages:
+  - docker.io
+  - python3.7
+  - python3-venv
+  - python3-pip
+
+ssh_authorized_keys:
+  - henry
+  - louis
+  - augustin
+
+target_dir: "/opt/opullence"
+
+packages_pip: [setuptools, pip]
+
+celery_dir: ["/var/log/celery", "/var/run/celery"]
+
+provision:
+  - nmap.yml
+  - recon-ng.yml
+  - wafw00f.yml
+  - gobuster.yml
+  - sublist3r.yml

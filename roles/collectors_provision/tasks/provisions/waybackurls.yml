@@ -1,0 +1,20 @@
+---
+- block:
+  - name: 'waybackurls : install golang'
+    include_role:
+      name: fubarhouse.golang
+
+  - name: 'waybackurls: install project'
+    shell: "/usr/local/go/bin/go get github.com/tomnomnom/waybackurls"
+    environment:
+      GOROOT: /usr/local/go
+      GOPATH: /srv/gopath
+    become: yes
+
+  - name: 'waybackurls: create launcher'
+    file:
+      src: /srv/gopath/bin/waybackurls
+      dest: /srv/bin/waybackurls
+      state: link
+  tags:
+    - waybackurls

@@ -1,0 +1,24 @@
+---
+- block:
+  - name: 'LittleBrother : clone repository'
+    git:
+      accept_hostkey: yes
+      clone: yes
+      depth: 1
+      dest: /srv/scripts/LittleBrother
+      force: yes
+      repo: https://github.com/lulz3xploit/LittleBrother.git
+
+  - name: 'LittleBrother : install requirements'
+    pip:
+      requirements: /srv/scripts/LittleBrother/requirements.txt
+      virtualenv: /srv/scripts/LittleBrother/env
+      virtualenv_python: python3.7
+
+  - name: 'LittleBrother : install launcher'
+    template:
+      dest: /srv/bin/LittleBrother
+      mode: 0755
+      src: LittleBrother.sh
+  tags:
+    - LittleBrother

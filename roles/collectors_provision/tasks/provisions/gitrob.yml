@@ -1,0 +1,27 @@
+---
+- block:
+  - name: 'gitrob : Install expect'
+    become: true
+    apt:
+      name: expect
+      update_cache: yes
+      state: latest
+
+  - name: 'gitrob : install golang'
+    include_role:
+      name: fubarhouse.golang
+
+  - name: 'gitrob: install project'
+    shell: "/usr/local/go/bin/go get github.com/michenriksen/gitrob"
+    environment:
+      GOROOT: /usr/local/go
+      GOPATH: /srv/gopath
+    become: yes
+
+  - name: 'gitrob : install launcher'
+    template:
+      dest: /srv/bin/gitrob
+      mode: 0755
+      src: gitrob.sh
+  tags:
+    - gitrob

@@ -1,0 +1,9 @@
+---
+- name: Collectors provision
+  hosts: collectors
+  remote_user: root
+  tasks:
+    - import_role:
+        name: collectors_provision
+      tags:
+        - collectors_provision

@@ -1,0 +1,24 @@
+---
+- block:
+  - name: 'socialscan : clone repository'
+    git:
+      accept_hostkey: yes
+      clone: yes
+      depth: 1
+      dest: /srv/scripts/socialscan
+      force: yes
+      repo: https://github.com/iojw/socialscan.git
+
+  - name: 'socialscan : Create venv'
+    command: virtualenv -p /usr/bin/python3.7 /srv/scripts/socialscan/env
+
+  - name: 'socialscan : setup.py install'
+    shell: cd /srv/scripts/socialscan && ./env/bin/pip install .
+   
+  - name: 'socialscan : install launcher'
+    template:
+      dest: /srv/bin/socialscan
+      mode: 0755
+      src: socialscan.sh
+  tags:
+    - socialscan
