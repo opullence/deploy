@@ -8,11 +8,13 @@
     packages:
     - python-virtualenv
     - python3-pip
+  become: yes
 
 - name: Add the user collector
   user:
     name: collector
     groups: collector
+  become: yes
 
 - name: Creates /srv/bin directory
   file:
@@ -21,35 +23,7 @@
     group: collector
     mode: 0775
     state: directory
-
-- name: Download wordlists
-  git:
-    accept_hostkey: yes
-    clone: yes
-    force: yes
-    dest: /srv/wordlists
-    repo: git@gitlab.com:opulence/wordlists.git
-
-- name: add /srv/bin to path
-  lineinfile: >
-    dest=/etc/environment
-    state=present
-    backrefs=yes
-    regexp='PATH=(["]*)((?!.*?/srv/bin).*?)(["]*)$'
-    line="PATH=\1\2:/srv/bin\3"
-
-- name: Register all tasks name
-  command: "ls ../roles/collectors_provision/tasks/provisions/"
-  register: tasks_to_include
-
-- name: Include all tasks
-  include: "{{ 'provisions/' + item }}"
-  with_items: "{{ tasks_to_include.stdout_lines | difference(['main.yml']) | list }}"
-
-# - name: Include all tasks
-#   include: "{{ item }}"
-#   with_items: "{{ provision }}"
-
+  become: yes
 
 - name: Ensure all the directories are created with the right permissions
   file:
@@ -63,3 +37,32 @@
     - /srv/bin
     - /srv/scripts
     - /srv/wordlists
+  become: yes
+  
+- name: Download wordlists
+  git:
+    accept_hostkey: yes
+    clone: yes
+    force: yes
+    dest: /srv/wordlists
+    repo: git@gitlab.com:opulence/wordlists.git
+  become: no
+
+- name: add /srv/bin to path
+  lineinfile: >
+    dest=/etc/environment
+    state=present
+    backrefs=yes
+    regexp='PATH=(["]*)((?!.*?/srv/bin).*?)(["]*)$'
+    line="PATH=\1\2:/srv/bin\3"
+  become: yes
+
+- name: Include all tasks
+  include: "{{ 'provisions/' + item }}"
+  with_items: "{{ provision }}"
+  become: yes
+
+# - name: Include all tasks
+#   include: "{{ item }}"
+#   with_items: "{{ provision }}"
+

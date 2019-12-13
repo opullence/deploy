@@ -21,10 +21,24 @@ Vagrant.configure("2") do |config|
         config.ssh.username = 'collector'
     end
 
+    # SETUP COLLECTORS
     config.vm.provision "ansible" do |ansible|
         ansible.verbose = "v"
         ansible.playbook = "site.yml"
-        ansible.limit = "collector"
+        ansible.limit = "collectors"
+        ansible.inventory_path = "inventory/production"
+        ansible.extra_vars = {
+            ssh_pub_key_dir: '.ssh-keys',
+            ansible_user: 'collector',
+            host_collector: '127.0.0.1',
+        }
+    end
+    
+    # PROVISION COLLECTORS
+    config.vm.provision "ansible" do |ansible|
+        ansible.verbose = "v"
+        ansible.playbook = "./playbooks/provision.yml"
+        ansible.limit = "collectors"
         ansible.inventory_path = "inventory/production"
         ansible.extra_vars = {
             ssh_pub_key_dir: '.ssh-keys',

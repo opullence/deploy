@@ -21,6 +21,13 @@ tools_file_inner: "{% if tools_file is defined %}{{lookup('file', tools_file)}}{
 # define which tools should be installed
 tools_inner: "{% if tools_list is defined %}{{ tools_list }}{% else %}{{ tools_file_inner  }} {% endif %}"
 
+provision:
+  - nmap.yml
+  - recon-ng.yml
+  - wafw00f.yml
+  - gobuster.yml
+  - sublist3r.yml
+
 packages_pip: [setuptools, pip]
 
 celery_dir: ["/var/log/celery", "/var/run/celery"]

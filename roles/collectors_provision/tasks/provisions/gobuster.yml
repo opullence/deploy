@@ -16,5 +16,8 @@
       src: /srv/gopath/bin/gobuster
       dest: /srv/bin/gobuster
       state: link
+    become: yes
   tags:
     - gobuster
+  become: yes
+  

@@ -1,7 +1,7 @@
 ---
 - name: Collectors provision
   hosts: collectors
-  remote_user: root
+  remote_user: collector
   tasks:
     - import_role:
         name: collectors_provision

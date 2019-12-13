@@ -12,6 +12,7 @@
       path: /usr/bin/nmap
       capability: cap_net_raw,cap_net_admin,cap_net_bind_service+eip
       state: present
+    become: yes
 
   - name: 'nmap : NMAP_PRIVILEGED'
     lineinfile:
@@ -19,6 +20,7 @@
       state: present
       regexp: "^NMAP_PRIVILEGED"
       line: "NMAP_PRIVILEGED=''"
+    become: yes
 
   - name: 'nmap : Download nmap-vulners'
     git:
@@ -28,6 +30,7 @@
       depth: 1
       dest: /usr/share/nmap/scripts/nmap-vulners
       repo: https://github.com/vulnersCom/nmap-vulners.git
+    become: yes
 
   - name: 'nmap : Download vulscan'
     git:
@@ -37,6 +40,7 @@
       depth: 1
       dest: /usr/share/nmap/scripts/vulscan
       repo: https://github.com/scipag/vulscan.git
+    become: yes
 
   - name: 'nmap: Set permissions on vulscan updater'
     file:
@@ -44,9 +48,11 @@
       owner: collector
       group: collector
       mode: 0750
+    become: yes
 
   - name: 'nmap: Update vulscan db'
     command: /usr/share/nmap/scripts/vulscan/utilities/updater/updateFiles.sh
+    become: yes
 
   tags:
     - nmap
