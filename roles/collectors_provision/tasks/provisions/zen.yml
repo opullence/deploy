@@ -1,0 +1,24 @@
+---
+- block:
+  - name: 'zen : clone repository'
+    git:
+      accept_hostkey: yes
+      clone: yes
+      depth: 1
+      dest: /srv/scripts/zen
+      force: yes
+      repo: https://github.com/s0md3v/Zen.git
+
+  - name: 'zen : install requirements'
+    pip:
+      requirements: /srv/scripts/zen/requirements.txt
+      virtualenv: /srv/scripts/zen/env
+      virtualenv_python: python3.7
+
+  - name: 'zen : install launcher'
+    template:
+      dest: /srv/bin/zen
+      mode: 0755
+      src: zen.sh
+  tags:
+    - zen
