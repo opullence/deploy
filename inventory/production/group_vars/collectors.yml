@@ -7,6 +7,7 @@ packages:
   - python3.7
   - python3-venv
   - python3-pip
+  - pass
 
 ssh_authorized_keys:
   - henry
@@ -16,17 +17,10 @@ ssh_authorized_keys:
 target_dir: "/opt/opullence"
 
 # check if tools file is given in extra vars, else define default tools list
-tools_file_inner: "{% if tools_file is defined %}{{lookup('file', tools_file)}}{% else %}{{ lookup('file', './default.config')}}{% endif %}"
+tools_file_inner: "{% if tools_file is defined %}{{lookup('file', tools_file)}}{% else %}{{ lookup('file', '../../default.config')}}{% endif %}"
 
 # define which tools should be installed
 tools_inner: "{% if tools_list is defined %}{{ tools_list }}{% else %}{{ tools_file_inner  }} {% endif %}"
-
-provision:
-  - nmap.yml
-  - recon-ng.yml
-  - wafw00f.yml
-  - gobuster.yml
-  - sublist3r.yml
 
 packages_pip: [setuptools, pip]
 

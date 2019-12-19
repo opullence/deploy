@@ -1,3 +1,12 @@
+
+- name: set fact
+  set_fact: prov_item="{{ item + '.yml'}}"
+  with_items: "{{ tools_inner }}"
+  register: prov_res
+
+- name: make a list
+  set_fact: provision="{{ prov_res.results | map(attribute='ansible_facts.prov_item') | list }}"
+
 - debug: 
     msg: "{{ provision }}"
 

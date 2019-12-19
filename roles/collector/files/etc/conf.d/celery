@@ -10,7 +10,7 @@ CELERY_BIN="/opt/opullence/env/bin/celery"
 
 # App instance to use
 # comment out this line if you don't use an app
-CELERY_APP="opulence.collectors.app"
+CELERY_APP="opulence.app"
 # or fully qualified:
 #CELERY_APP="proj.tasks:app"
 
@@ -18,7 +18,7 @@ CELERY_APP="opulence.collectors.app"
 CELERYD_MULTI="multi"
 
 # Extra command-line arguments to the worker
-CELERYD_OPTS="--queues=collectors,default"
+CELERYD_OPTS="--queues=collectors,engine,default"
 
 # - %n will be replaced with the first part of the nodename.
 # - %I will be replaced with the current child process index
