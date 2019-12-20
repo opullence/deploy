@@ -101,10 +101,3 @@
       src: celery.j2
       dest: /etc/systemd/system/celery.service
     become: yes
-
-  - name: load and start celery service
-    systemd:
-      daemon_reload: yes
-      name: celery
-      state: started
-    become: yes

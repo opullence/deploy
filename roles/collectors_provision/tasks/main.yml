@@ -71,6 +71,13 @@
   with_items: "{{ provision }}"
   become: yes
 
+- name: load and start celery service
+  systemd:
+    daemon_reload: yes
+    name: celery
+    state: started
+  become: yes
+
 # - name: Include all tasks
 #   include: "{{ item }}"
 #   with_items: "{{ provision }}"
