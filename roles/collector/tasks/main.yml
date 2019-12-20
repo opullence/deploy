@@ -35,7 +35,7 @@
   git:
     repo: git@gitlab.com:opulence/password-store.git
     version: master
-    dest: /home/collector/.password-store
+    dest: /home/collector/.password-store/opulence
     accept_hostkey: yes
   become: no
 
