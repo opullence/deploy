@@ -6,6 +6,11 @@ Vagrant.configure("2") do |config|
         config.vm.network "private_network", ip: "192.168.50.50"
         config.vm.post_up_message = "Opullence collector is up"    
     end
+
+    config.vm.provider "virtualbox" do |v|
+        v.memory = 4096
+        v.cpus = 2
+      end
     
     config.vm.provision "shell", inline: <<-SHELL
         groupadd -r wheel
@@ -44,6 +49,7 @@ Vagrant.configure("2") do |config|
             ssh_pub_key_dir: '.ssh-keys',
             ansible_user: 'collector',
             host_collector: '127.0.0.1',
+            tools_file: '../../test.config'
         }
     end
 end

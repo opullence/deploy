@@ -56,9 +56,9 @@
       requirements: /opt/opullence/requirements/production.txt
       virtualenv: /opt/opullence/env
 
-- name: run redis in container
+- name: run services in container
   block:
-  - name: copy redis docker compose
+  - name: copy docker compose file
     copy:
        src: opt/services
        dest: /opt/

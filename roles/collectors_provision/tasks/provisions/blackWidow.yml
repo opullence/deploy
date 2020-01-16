@@ -29,6 +29,7 @@
     group: collector
     mode: 0750
     recurse: yes
+  become: yes
 
   tags:
     - BlackWidow

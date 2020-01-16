@@ -19,6 +19,7 @@
     owner: "{{ fubarhouse_user }}"
     mode: 0755
     recurse: true
+  become: yes
 
 - name: "Go-Lang | Unpack distribution"
   unarchive:
@@ -31,10 +32,12 @@
     path: "{{ GOROOT }}"
     state: absent
   when: not build_go_from_source
+  become: yes
 
 - name: "Go-Lang | Moving to installation directory"
   command: "mv -f {{ go_temporary_dir }}/go {{ GOROOT }}"
   when: not build_go_from_source
+  become: yes
 
 - name: "Go-Lang | Remove temporary data"
   file:
