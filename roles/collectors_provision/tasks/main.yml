@@ -1,4 +1,17 @@
 
+- name: get file if exist
+  set_fact:
+    tools_inner: "{{lookup('file', '../../' + tools_file)}}" 
+  when: tools_file is defined
+
+- name: get default file if no file provided
+  set_fact:
+    tools_inner: "{{ lookup('file', '../../default.config')}}" 
+  when: tools_file is undefined
+
+- debug: 
+    msg: "{{ tools_inner }}"
+
 - name: set fact
   set_fact: prov_item="{{ item + '.yml'}}"
   with_items: "{{ tools_inner }}"

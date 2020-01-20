@@ -18,3 +18,7 @@ They will be instlaled under /srv/ directory with user `collector` as owner.
 ansible-playbook -i ./inventory/local ./playbooks/provision.yml -l local 
 
 ```
+
+## Add a collector
+
+look at the doc (doc/add-collector.md)

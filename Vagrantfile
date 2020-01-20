@@ -49,7 +49,7 @@ Vagrant.configure("2") do |config|
             ssh_pub_key_dir: '.ssh-keys',
             ansible_user: 'collector',
             host_collector: '127.0.0.1',
-            tools_file: '../../test.config'
+            tools_file: 'searchgit.config'
         }
     end
 end
