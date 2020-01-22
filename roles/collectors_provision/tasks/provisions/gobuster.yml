@@ -1,0 +1,23 @@
+---
+- block:
+  - name: 'gobuster : install golang'
+    include_role:
+      name: fubarhouse.golang
+
+  - name: 'gobuster: install project'
+    shell: "/usr/local/go/bin/go get github.com/OJ/gobuster"
+    environment:
+      GOROOT: /usr/local/go
+      GOPATH: /srv/gopath
+    become: yes
+
+  - name: 'gobuster: create launcher'
+    file:
+      src: /srv/gopath/bin/gobuster
+      dest: /srv/bin/gobuster
+      state: link
+    become: yes
+  tags:
+    - gobuster
+  become: yes
+  

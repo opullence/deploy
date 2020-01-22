@@ -1,0 +1,58 @@
+---
+- block:
+  - name: 'nmap : Install nmap'
+    become: true
+    apt:
+      name: nmap
+      update_cache: yes
+      state: latest
+
+  - name: 'nmap : Set capabilities'
+    capabilities:
+      path: /usr/bin/nmap
+      capability: cap_net_raw,cap_net_admin,cap_net_bind_service+eip
+      state: present
+    become: yes
+
+  - name: 'nmap : NMAP_PRIVILEGED'
+    lineinfile:
+      dest: "/etc/environment"
+      state: present
+      regexp: "^NMAP_PRIVILEGED"
+      line: "NMAP_PRIVILEGED=''"
+    become: yes
+
+  - name: 'nmap : Download nmap-vulners'
+    git:
+      accept_hostkey: yes
+      force: yes
+      clone: yes
+      depth: 1
+      dest: /usr/share/nmap/scripts/nmap-vulners
+      repo: https://github.com/vulnersCom/nmap-vulners.git
+    become: yes
+
+  - name: 'nmap : Download vulscan'
+    git:
+      accept_hostkey: yes
+      force: yes
+      clone: yes
+      depth: 1
+      dest: /usr/share/nmap/scripts/vulscan
+      repo: https://github.com/scipag/vulscan.git
+    become: yes
+
+  - name: 'nmap: Set permissions on vulscan updater'
+    file:
+      path: /usr/share/nmap/scripts/vulscan/utilities/updater/updateFiles.sh
+      owner: collector
+      group: collector
+      mode: 0750
+    become: yes
+
+  - name: 'nmap: Update vulscan db'
+    command: /usr/share/nmap/scripts/vulscan/utilities/updater/updateFiles.sh
+    become: yes
+
+  tags:
+    - nmap

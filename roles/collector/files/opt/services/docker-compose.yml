@@ -1,0 +1,32 @@
+version: '2'
+
+services:
+  redis:
+    container_name: redis-opulence
+    image: 'bitnami/redis:latest'
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+      - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL
+    ports:
+      - '6379:6379'
+    volumes:
+      - 'redis_data:/opt/redis/data'
+  mongo:
+    container_name: mongo-opulence
+    image: mongo
+    restart: always
+    ports:
+      - '27017:27017'
+  neo4j:
+    container_name: neo-opulence
+    image: neo4j
+    restart: always
+    ports:
+      - '7474:7474'
+      - '7687:7687'
+  
+
+
+volumes:
+  redis_data:
+    driver: local

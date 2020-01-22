@@ -1,0 +1,24 @@
+---
+- block:
+  - name: 'ctfr : clone repository'
+    git:
+      accept_hostkey: yes
+      clone: yes
+      depth: 1
+      dest: /srv/scripts/ctfr
+      force: yes
+      repo: https://github.com/UnaPibaGeek/ctfr.git
+
+  - name: 'ctfr : install requirements'
+    pip:
+      requirements: /srv/scripts/ctfr/requirements.txt
+      virtualenv: /srv/scripts/ctfr/env
+      virtualenv_python: python3
+   
+  - name: 'ctfr : install launcher'
+    template:
+      dest: /srv/bin/ctfr
+      mode: 0755
+      src: ctfr.sh
+  tags:
+    - ctfr

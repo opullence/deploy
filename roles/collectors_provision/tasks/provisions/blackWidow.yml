@@ -1,0 +1,35 @@
+---
+- block:
+  - name: 'BlackWidow : clone repository'
+    git:
+      accept_hostkey: yes
+      clone: yes
+      depth: 1
+      dest: /srv/scripts/BlackWidow
+      force: yes
+      repo: https://github.com/1N3/BlackWidow.git
+
+  - name: 'BlackWidow : install requirements'
+    pip:
+      requirements: /srv/scripts/BlackWidow/requirements.txt
+      virtualenv: /srv/scripts/BlackWidow/env
+      virtualenv_python: python2.7
+   
+  - name: 'BlackWidow : install launcher'
+    template:
+      dest: /srv/bin/blackwidow
+      mode: 0755
+      src: blackwidow.sh
+
+- name: 'BlackWidow : ensure /usr/share/blackwidow is created with the correct rights'
+  file:
+    path: /usr/share/blackwidow
+    state: directory
+    owner: collector
+    group: collector
+    mode: 0750
+    recurse: yes
+  become: yes
+
+  tags:
+    - BlackWidow

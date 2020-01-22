@@ -1,0 +1,27 @@
+---
+- block:
+  - name: 'WafW00f : clone repository'
+    git:
+      accept_hostkey: yes
+      clone: yes
+      depth: 1
+      dest: /srv/scripts/wafw00f
+      force: yes
+      repo: https://github.com/EnableSecurity/wafw00f.git
+
+  - name: 'WafW00f : Create venv'
+    command: virtualenv /srv/scripts/wafw00f/env
+    
+  - name: 'WafW00f: install project'
+    shell: "cd /srv/scripts/wafw00f && ./env/bin/python setup.py install"
+
+  - name: 'WafW00f : install launcher'
+    template:
+      dest: /srv/bin/wafw00f
+      mode: 0755
+      src: wafw00f.sh
+    become: yes
+    become_user: collector
+
+  tags:
+    - wafw00f

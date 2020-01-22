@@ -1,0 +1,24 @@
+---
+- block:
+  - name: 'infoga : clone repository'
+    git:
+      accept_hostkey: yes
+      clone: yes
+      depth: 1
+      dest: /srv/scripts/infoga
+      force: yes
+      repo: https://github.com/m4ll0k/Infoga.git
+
+  - name: 'infoga : Create venv'
+    command: virtualenv /srv/scripts/infoga/env
+
+  - name: 'infoga : setup.py install'
+    shell: cd /srv/scripts/infoga && ./env/bin/python setup.py install
+   
+  - name: 'infoga : install launcher'
+    template:
+      dest: /srv/bin/infoga
+      mode: 0755
+      src: infoga.sh
+  tags:
+    - infoga

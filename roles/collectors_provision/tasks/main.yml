@@ -1,0 +1,97 @@
+
+- name: get file if exist
+  set_fact:
+    tools_inner: "{{lookup('file', '../../' + tools_file)}}" 
+  when: tools_file is defined
+
+- name: get default file if no file provided
+  set_fact:
+    tools_inner: "{{ lookup('file', '../../default.config')}}" 
+  when: tools_file is undefined
+
+- debug: 
+    msg: "{{ tools_inner }}"
+
+- name: set fact
+  set_fact: prov_item="{{ item + '.yml'}}"
+  with_items: "{{ tools_inner }}"
+  register: prov_res
+
+- name: make a list
+  set_fact: provision="{{ prov_res.results | map(attribute='ansible_facts.prov_item') | list }}"
+
+- debug: 
+    msg: "{{ provision }}"
+
+- name: Ensure all the debian packages are installed
+  apt:
+    name: "{{ packages }}"
+  vars:
+    packages:
+    - python-virtualenv
+    - python3-pip
+  become: yes
+
+- name: Add the user collector
+  user:
+    name: collector
+    groups: collector
+  become: yes
+
+- name: Creates /srv/bin directory
+  file:
+    path: /srv/bin
+    owner: collector
+    group: collector
+    mode: 0775
+    state: directory
+  become: yes
+
+- name: Ensure all the directories are created with the right permissions
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: collector
+    group: collector
+    mode: 0750
+    recurse: yes
+  with_items:
+    - /srv/bin
+    - /srv/scripts
+    - /srv/wordlists
+  become: yes
+  
+- name: Download wordlists
+  git:
+    accept_hostkey: yes
+    clone: yes
+    force: yes
+    dest: /srv/wordlists
+    repo: git@gitlab.com:opulence/wordlists.git
+  become: no
+
+- name: add /srv/bin to path
+  lineinfile: >
+    dest=/etc/environment
+    state=present
+    backrefs=yes
+    regexp='PATH=(["]*)((?!.*?/srv/bin).*?)(["]*)$'
+    line="PATH=\1\2:/srv/bin\3"
+  become: yes
+
+- name: Include all tasks
+  include: "{{ 'provisions/' + item }}"
+  with_items: "{{ provision }}"
+  become: yes
+
+- name: load and start celery service
+  systemd:
+    daemon_reload: yes
+    name: celery
+    state: started
+  become: yes
+
+# - name: Include all tasks
+#   include: "{{ item }}"
+#   with_items: "{{ provision }}"
+

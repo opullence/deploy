@@ -1,0 +1,24 @@
+---
+- block:
+  - name: 'phoneInfoga : clone repository'
+    git:
+      accept_hostkey: yes
+      clone: yes
+      depth: 1
+      dest: /srv/scripts/phoneInfoga
+      force: yes
+      repo: https://github.com/sundowndev/PhoneInfoga.git
+
+  - name: 'phoneInfoga : install requirements'
+    pip:
+      requirements: /srv/scripts/phoneInfoga/requirements.txt
+      virtualenv: /srv/scripts/phoneInfoga/env
+      virtualenv_python: python3.7
+
+  - name: 'phoneInfoga : install launcher'
+    template:
+      dest: /srv/bin/phoneinfoga
+      mode: 0755
+      src: phoneinfoga.sh
+  tags:
+    - phoneinfoga

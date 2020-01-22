@@ -1,0 +1,24 @@
+---
+- block:
+  - name: 'trufflehog : clone repository'
+    git:
+      accept_hostkey: yes
+      clone: yes
+      depth: 1
+      dest: /srv/scripts/truffleHog
+      force: yes
+      repo: https://github.com/dxa4481/truffleHog
+
+  - name: 'trufflehog : install requirements'
+    pip:
+      requirements: /srv/scripts/truffleHog/requirements.txt
+      virtualenv: /srv/scripts/truffleHog/env
+      virtualenv_python: python3.6
+
+  - name: 'truffleHog : install launcher'
+    template:
+      dest: /srv/bin/truffleHog
+      mode: 0755
+      src: trufflehog.sh
+  tags:
+    - truffleHog

@@ -1,0 +1,27 @@
+---
+- block:
+  - name: 'twint : clone repository'
+    git:
+      accept_hostkey: yes
+      clone: yes
+      depth: 1
+      dest: /srv/scripts/twint
+      force: yes
+      repo: https://github.com/twintproject/twint.git
+
+  - name: 'twint : install requirements'
+    pip:
+      requirements: /srv/scripts/twint/requirements.txt
+      virtualenv: /srv/scripts/twint/env
+      virtualenv_python: python3
+
+  - name: 'twint : setup.py install'
+    shell: cd /srv/scripts/twint && ./env/bin/python setup.py install
+   
+  - name: 'twint : install launcher'
+    template:
+      dest: /srv/bin/twint
+      mode: 0755
+      src: twint.sh
+  tags:
+    - twint

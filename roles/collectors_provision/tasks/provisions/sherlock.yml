@@ -1,0 +1,24 @@
+---
+- block:
+  - name: 'sherlock : clone repository'
+    git:
+      accept_hostkey: yes
+      clone: yes
+      depth: 1
+      dest: /srv/scripts/sherlock
+      force: yes
+      repo: https://github.com/sherlock-project/sherlock.git
+
+  - name: 'sherlock : install requirements'
+    pip:
+      requirements: /srv/scripts/sherlock/requirements.txt
+      virtualenv: /srv/scripts/sherlock/env
+      virtualenv_python: python3
+
+  - name: 'sherlock : install launcher'
+    template:
+      dest: /srv/bin/sherlock
+      mode: 0755
+      src: sherlock.sh
+  tags:
+    - sherlock

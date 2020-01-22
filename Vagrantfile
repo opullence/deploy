@@ -6,10 +6,14 @@ Vagrant.configure("2") do |config|
         config.vm.network "private_network", ip: "192.168.50.50"
         config.vm.post_up_message = "Opullence collector is up"    
     end
+
+    config.vm.provider "virtualbox" do |v|
+        v.memory = 4096
+        v.cpus = 2
+      end
     
     config.vm.provision "shell", inline: <<-SHELL
-        groupadd -r wheel
-        useradd -m -s /bin/bash -U collector -p vagrant -u 666 --groups wheel
+        useradd -m -s /bin/bash -U collector -p vagrant -u 666 --groups sudo
         cp -pr /home/vagrant/.ssh /home/collector/
         chown -R collector:collector /home/collector
         echo "%collector ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/collector
@@ -21,15 +25,30 @@ Vagrant.configure("2") do |config|
         config.ssh.username = 'collector'
     end
 
+    # SETUP COLLECTORS
     config.vm.provision "ansible" do |ansible|
         ansible.verbose = "v"
         ansible.playbook = "site.yml"
-        ansible.limit = "collector"
+        ansible.limit = "collectors"
         ansible.inventory_path = "inventory/production"
         ansible.extra_vars = {
             ssh_pub_key_dir: '.ssh-keys',
             ansible_user: 'collector',
             host_collector: '127.0.0.1',
+        }
+    end
+    
+    # PROVISION COLLECTORS
+    config.vm.provision "ansible" do |ansible|
+        ansible.verbose = "v"
+        ansible.playbook = "./playbooks/provision.yml"
+        ansible.limit = "collectors"
+        ansible.inventory_path = "inventory/production"
+        ansible.extra_vars = {
+            ssh_pub_key_dir: '.ssh-keys',
+            ansible_user: 'collector',
+            host_collector: '127.0.0.1',
+            tools_file: 'searchgit.config'
         }
     end
 end
