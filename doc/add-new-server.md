@@ -2,7 +2,7 @@
 
 ## Requirement on your server
 
-Your need to do several things on your blank server:
+Your need to do several things on your blank server:  
 
      - update your system
      - install a ssh server
@@ -10,13 +10,13 @@ Your need to do several things on your blank server:
      - set a password to collector
      - setup ssh connection by key
 
-when you have done this, your server is ready
+when you have done this, your server is ready  
 
 ## Setup your server in the project
 
 add your ip in inventory/production/hosts.yml like this:
 
-```
+```yaml
 collectors:
   hosts:
     "collector server 1":
@@ -30,10 +30,12 @@ collectors:
 ```
 
 
-ansible-playbook -i ./inventory/production ./site.yml 
---ask-become-pass
---extra-vars "ansible_become_pass=$(pass test/root)"
+To enables forwarding keys into ssh-agent, add the following line to ~/.ssh/config  
+
+```
 add Host <yourhost1> <yourhost2>
      ForwardAgent yes
+```
 
-ansible-playbook -i ./inventory/production ./playbooks/provision.yml --extra-vars "ansible_become_pass=$(pass collector-192.168.1.22/root)"
+Thanks to this, you don't have to create / copy private key on remote machine.  
+Don't forget to change `<yourhost*>` by your host ip.  
