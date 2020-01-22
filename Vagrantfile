@@ -13,8 +13,7 @@ Vagrant.configure("2") do |config|
       end
     
     config.vm.provision "shell", inline: <<-SHELL
-        groupadd -r wheel
-        useradd -m -s /bin/bash -U collector -p vagrant -u 666 --groups wheel
+        useradd -m -s /bin/bash -U collector -p vagrant -u 666 --groups sudo
         cp -pr /home/vagrant/.ssh /home/collector/
         chown -R collector:collector /home/collector
         echo "%collector ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/collector

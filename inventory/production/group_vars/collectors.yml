@@ -1,6 +1,6 @@
 ---
 user: collector
-group: wheel
+group: collector
 
 packages:
   - docker.io
@@ -14,6 +14,8 @@ ssh_authorized_keys:
   - henry
   - louis
   - augustin
+
+ssh_pub_key_dir: ".ssh-keys"
 
 target_dir: "/opt/opullence"
 

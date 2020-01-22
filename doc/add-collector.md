@@ -16,7 +16,7 @@ note that you must copy the .sh file to the destination /srv/bin/ (in the remote
 
 for example, something like that:
 
-```
+```yaml
   - name: '<you-collector-name> : install launcher'
     template:
       dest: /srv/bin/<you-collector-name>
@@ -43,13 +43,13 @@ of course, don't forget do add the collector you have created.
 
 when your run ansible, you need to specify the file like this:
 
-```
+```bash
 -e "tools_file=my-own-config.config"
 ```
 
 OR
 
-```
+```bash
 --extra-vars "tools_file=my-own-config.config"
 ```
 

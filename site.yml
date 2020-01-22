@@ -1,7 +1,7 @@
 ---
 
 - name: collector deployment
-  hosts: "{{ host_collector }}"
+  hosts: collectors
   remote_user: "{{ hostvars[groups['collectors'][0]].user }}"
   roles:
     - collector
