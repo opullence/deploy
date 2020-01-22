@@ -15,6 +15,7 @@ vagrant up
 > :warning: **If you don't want to deploy locally**:  
 > please specify it by adding `-l <HOSTS_NAME>`  
 > where HOSTS_NAME is the name setted in `inventory/production/hosts.yml`   
+
 the user password will be asked. It's used to perform some installs.  
 
 ```bash
@@ -26,6 +27,7 @@ ansible-playbook -i ./inventory/production ./site.yml --ask-become-pass
 > :warning: **If you don't want to deploy locally**:  
 > please specify it by adding `-l <HOSTS_NAME>`  
 > where HOSTS_NAME is the name setted in `inventory/production/hosts.yml`  
+
 the user password will be asked. It's used to perform some installs.  
 
 ```bash
